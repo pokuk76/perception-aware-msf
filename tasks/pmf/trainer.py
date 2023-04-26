@@ -123,11 +123,13 @@ class Trainer(object):
             )
 
         elif self.settings.dataset == "nuScenes":
+            # version = "v1.0-trainval"
+            version = "v1.0-mini"
             trainset = pc_processor.dataset.nuScenes.Nuscenes(
-                root=self.settings.data_root, version="v1.0-trainval", split="train",
+                root=self.settings.data_root, version=version, split="train",
             )
             valset = pc_processor.dataset.nuScenes.Nuscenes(
-                root=self.settings.data_root, version="v1.0-trainval", split="val",
+                root=self.settings.data_root, version=version, split="val",
             )
             self.cls_weight = np.ones((self.settings.nclasses))
             self.ignore_class = [0]

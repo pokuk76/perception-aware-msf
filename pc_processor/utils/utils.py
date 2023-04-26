@@ -34,7 +34,8 @@ def init_distributed_mode(args):
         return
 
     args.distributed = True
-    args.dist_backend = "nccl"
+    # args.dist_backend = "nccl"
+    args.dist_backend = "gloo"
     print("| distributed init (rank {}): {}".format(args.rank, args.dist_url), flush=True)
     torch.distributed.init_process_group(
         backend=args.dist_backend,

@@ -1,7 +1,7 @@
 # common config
-save_path: "../../experiments/PMF-nuScenes/"
+save_path: "../../experiments/PMF-nuScenes-init/"
 seed: 1
-gpu: "0,1,2,3,4,5,6,7"
+gpu: "0"
 print_frequency: 2
 n_threads: 4
 experiment_id: "baseline_timestamp"
@@ -20,8 +20,10 @@ weight_decay: 0.00001
 val_frequency: 1
 
 dataset: "nuScenes"
-nclasses: 17 # 16+1(ignored)
-data_root: "/path/to/nuscenes/"
+# nclasses: 19 # 16+1(ignored)
+nclasses: 14 # Mapping several object classes to one construction class
+# data_root: "/path/to/nuscenes/"
+data_root: "/home/kpoku/Documents/sensor-fusion/fusion/data/sets/nuscenes/"
 
 base_channels: 32
 img_backbone: "resnet34"
@@ -69,7 +71,7 @@ augmentation:
 sensor:
   name: "HDL64"
   type: "perception-aware"
-  proj_h: 896
+  proj_h: 896 
   proj_w: 1600 
   proj_ht: 512 
   proj_wt: 640 

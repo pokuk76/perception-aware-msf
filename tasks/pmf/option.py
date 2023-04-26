@@ -20,7 +20,8 @@ class Option(object):
         self.world_size = 1 # 
         self.distributed = False # 
         self.n_gpus = len(self.gpu.split(",")) # # number of GPUs to use by default
-        self.dist_backend = "nccl"
+        # self.dist_backend = "nccl"
+        self.dist_backend = "gloo"
         self.dist_url = "env://"
 
         self.print_frequency = self.config["print_frequency"]  # print frequency (default: 10)

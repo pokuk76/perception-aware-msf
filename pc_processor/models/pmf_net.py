@@ -238,13 +238,22 @@ class PMFNet(nn.Module):
         self.lidar_stream = SalsaNextFusion(
             in_channels=pcd_channels, nclasses=nclasses, base_channels=base_channels,
             img_feature_channels=self.camera_stream_encoder.feature_channels)
+            
+        # self.radar_stream = SalsaNextFusion(
+        #     in_channels=pcd_channels, nclasses=nclasses, base_channels=base_channels,
+        #     img_feature_channels=self.camera_stream_encoder.feature_channels)
+            
     
     def forward(self, pcd_feature, img_feature):
+    # def forward(self, pcd_feature, img_feature, rpcd_feature):
         img_feature = self.camera_stream_encoder(img_feature)
 
         lidar_pred = self.lidar_stream(pcd_feature, img_feature)
 
         camera_pred = self.camera_stream_decoder(img_feature)
+        
+        # radar_pred = self.radar_stream(rpcd_feature, img_feature)
 
-        return lidar_pred, camera_pred 
+        # return lidar_pred, camera_pred, radar_pred
+        return lidar_pred, camera_pred
             

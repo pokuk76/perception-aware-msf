@@ -15,41 +15,170 @@ from nuscenes.utils.geometry_utils import view_points, box_in_image, BoxVisibili
 from nuscenes.lidarseg.lidarseg_utils import colormap_to_colors, plt_to_cv2, get_stats, \
     get_labels_in_coloring, create_lidarseg_legend, paint_points_label
 
-map_name_from_general_to_segmentation_class = {
-    'human.pedestrian.adult': 'pedestrian',
-    'human.pedestrian.child': 'pedestrian',
-    'human.pedestrian.wheelchair': 'ignore',
-    'human.pedestrian.stroller': 'ignore',
-    'human.pedestrian.personal_mobility': 'ignore',
-    'human.pedestrian.police_officer': 'police_officer',
-    'human.pedestrian.construction_worker': 'construction_worker',
-    'animal': 'ignore',
-    'vehicle.car': 'car',
-    'vehicle.motorcycle': 'motorcycle',
-    'vehicle.bicycle': 'bicycle',
-    'vehicle.bus.bendy': 'bus',
-    'vehicle.bus.rigid': 'bus',
-    'vehicle.truck': 'truck',
-    'vehicle.construction': 'construction_vehicle',
-    'vehicle.emergency.ambulance': 'ambulance',
-    'vehicle.emergency.police': 'police',
-    'vehicle.trailer': 'trailer',
-    'movable_object.barrier': 'barrier',
-    'movable_object.trafficcone': 'traffic_cone',
-    'movable_object.pushable_pullable': 'pushable_pullable',
-    'movable_object.debris': 'debris',
-    'static_object.bicycle_rack': 'ignore',
-    'flat.driveable_surface': 'driveable_surface',
-    'flat.other': 'other_flat',
-    'flat.sidewalk': 'sidewalk',
-    'flat.terrain': 'terrain',
-    'static.manmade': 'manmade',
-    'static.vegetation': 'vegetation',
-    'noise': 'ignore',
-    'static.other': 'ignore',
-    'vehicle.ego': 'ignore'
+
+
+# This map is also to help humans keep track of the classes (we could map from obj_id to nuscenes segmentation label)
+map_name_from_carla_obj_id_to_carla_class = {
+    0: 'None',
+    1: 'Buildings',
+    2: 'Fences',
+    3: 'Other',
+    4: 'Pedestrians',
+    5: 'Poles',
+    6: 'RoadLines',
+    7: 'Roads',
+    8: 'Sidewalks',
+    9: 'Vegetation',
+    10: 'Vehicles',
+    11: 'bus',
+    12: 'TrafficSigns',
+    13: 'Sky',
+    14: 'Ground',
+    15: 'Bridge',
+    16: 'RailTrack',
+    17: 'GuardRail',
+    18: 'TrafficLight',
+    19: 'Static',
+    20: 'Dynamic',
+    21: 'Water',
+    22: 'Terrain',
+    23: '',
+    24: ''
 }
 
+# This map is also to help humans keep track of the classes (we could map from obj_id to nuscenes segmentation label)
+map_name_from_carla_914_obj_id_to_carla_914_class = {
+    0: 'None',
+    1: 'Buildings',
+    2: 'Fences',
+    3: 'Other',
+    4: 'Pedestrians',
+    5: 'Poles',
+    6: 'RoadLines',
+    7: 'Roads',
+    8: 'Sidewalks',
+    9: 'Vegetation',
+    10: 'Vehicles',
+    11: 'Bus',
+    12: 'TrafficSigns',
+    13: 'Sky',
+    14: 'Ground',
+    15: 'Bridge',
+    16: 'RailTrack',
+    17: 'GuardRail',
+    18: 'TrafficLight',
+    19: 'Static',
+    20: 'Dynamic',
+    21: 'Water',
+    22: 'Terrain',
+    23: '',
+    24: ''
+}
+
+
+# None         =    0u,
+# # cityscape labels
+# Roads        =    1u,
+# Sidewalks    =    2u,
+# Buildings    =    3u,
+# Walls        =    4u,
+# Fences       =    5u,
+# Poles        =    6u,
+# TrafficLight =    7u,
+# TrafficSigns =    8u,
+# Vegetation   =    9u,
+# Terrain      =   10u,
+# Sky          =   11u,
+# Pedestrians  =   12u,
+# Rider        =   13u,
+# Car          =   14u,
+# Truck        =   15u,
+# Bus          =   16u,
+# Train        =   17u,
+# Motorcycle   =   18u,
+# Bicycle      =   19u,
+# // custom
+# Static       =   20u,
+# Dynamic      =   21u,
+# Other        =   22u,
+# Water        =   23u,
+# RoadLines    =   24u,
+# Ground       =   25u,
+# Bridge       =   26u,
+# RailTrack    =   27u,
+# GuardRail    =   28u,
+
+
+# 'None': '',
+# # cityscape labels
+# 'Roads': '',
+# 'Sidewalks': '',
+# 'Buildings': '',
+# 'Walls': '',
+# 'Fences': '',
+# 'Poles': '',
+# 'TrafficLight': '',
+# 'TrafficSigns': '',
+# 'Vegetation': '',
+# 'Terrain': '',
+# 'Sky': '',
+# 'Pedestrians': '',
+# 'Rider': '',
+# 'Car': '',
+# 'Truck': '',
+# 'Bus': '',
+# 'Train': '',
+# 'Motorcycle': '',
+# 'Bicycle': '',
+# # custom
+# 'Static': '',
+# 'Dynamic': '',
+# 'Other': '',
+# 'Water': '',
+# 'RoadLines': '',
+# 'Ground': '',
+# 'Bridge': '',
+# 'RailTrack': '',
+# 'GuardRail': '',
+
+
+# Map from Carla Class to NuScenes class
+map_name_from_carla_class_to_segmentation_class = {
+    'None': 'ignore',
+    # cityscape labels
+    'Roads': 'driveable_surface',
+    'Sidewalks': 'sidewalk',
+    'Buildings': 'manmade',
+    'Walls': 'manmade',
+    'Fences': 'manmade',
+    'Poles': 'manmade',
+    'TrafficLight': '',
+    'TrafficSigns': '',
+    'Vegetation': 'vegetation',
+    'Terrain': 'terrain',
+    'Sky': 'ignore',
+    'Pedestrians': 'pedestrian',
+    'Rider': 'ignore',
+    'Car': 'construction_vehicle',
+    'Truck': 'construction_vehicle',
+    'Bus': 'bus',
+    'Train': '',
+    'Motorcycle': 'motorcycle',
+    'Bicycle': 'bicycle',
+    # custom
+    'Static': '',
+    'Dynamic': '',
+    'Other': '',
+    'Water': '',
+    'RoadLines': '',
+    'Ground': '',
+    'Bridge': '',
+    'RailTrack': '',
+    'GuardRail': '',
+}
+
+
+# Map from NuScenes segmaentation class to index
 map_name_from_segmentation_class_to_segmentation_index = {
     'ignore': 0,
     'bicycle': 1,
@@ -61,8 +190,8 @@ map_name_from_segmentation_class_to_segmentation_index = {
     'truck': 7,
     'driveable_surface': 8,
     'other_flat': 9,
-    'sidewalk': 10,
-    'terrain': 11,
+    'sidewalk': 10, 
+    'terrain': 11, 
     'manmade': 12,
     'vegetation': 13,
     'traffic_cone': 14,
@@ -72,6 +201,34 @@ map_name_from_segmentation_class_to_segmentation_index = {
     'debris': 14,
     'pushable_pullable', 14
 }
+
+
+# Map from NuScenes segmaentation class to index
+# map_name_from_segmentation_class_to_segmentation_index = {
+#     'ignore': 0,
+#     'barrier': 1,
+#     'bicycle': 2,
+#     'bus': 3,
+#     'car': 4,
+#     'construction_vehicle': 5,
+#     'motorcycle': 6,
+#     'pedestrian': 7,
+#     'traffic_cone': 8,
+#     'trailer': 9,
+#     'truck': 10,
+#     'driveable_surface': 11,
+#     'other_flat': 12,
+#     'sidewalk': 13,
+#     'terrain': 14,
+#     'manmade': 15,
+#     'vegetation': 16,
+#     'construction_worker': 17, 
+#     'debris': 18,
+#     'pushable_pullable', 19
+# }
+
+Camera 45 degrees
+Radar 45 degrees
 
 
 class Nuscenes(data.Dataset):
@@ -351,7 +508,7 @@ def get_path_infos_cam_lidar(nusc, train_scenes):
 if __name__ == '__main__':
     # data_path = '/mnt/cephfs/dataset/pointclouds/nuscenes/lidarseg'
     # data_path = '/mnt/cephfs/dataset/pointclouds/nuscenes'
-    data_path = '/home/kpoku/Documents/sensor-fusion/fusion/data/sets/nuscenes'
+    data_path = '/home/kpoku/Documents/sensor-fusion/fusion/data/sets/carla'
 
     # dataset = Nuscenes(root=data_path, version='v1.0-trainval', split='train', return_ref=False)
     dataset = Nuscenes(root=data_path, version='v1.0-mini', split='train',
